@@ -1,0 +1,23 @@
+<div class="key">
+<%= form_for @key do |f| %>
+  <%= render partial: 'shared/form_errors', locals: { resource: @key, resource_name: "this key" } %>
+  <div class="key-name-and-body">
+    <div class="key-name-field">
+      <%= f.label :name %><br />
+      <%= f.text_field :name %>
+    </div>
+    <div class="key-body-field">
+      <%= f.label :body %><br />
+      <%= f.text_area :body, rows: "7", cols: "60" %>
+    </div>
+  </div>
+  <div class="add-key-button">
+    <% if @key.persisted? %>
+      <%= f.submit "Done", class: "done-button" %>
+      <%= link_to 'Delete', @key, confirm: 'Are you sure you want to delete this key?', method: :delete, class: 'delete-button' %>
+    <% else %>
+      <%= f.submit "Add Key", id: "create-key-button" %>
+    <% end %>
+  </div>
+<% end %>
+</div>

@@ -1,0 +1,78 @@
+<%= form_for @repository do |f| %>
+  <%= render partial: 'shared/form_errors', locals: { resource: @repository, resource_name: "this repository" } %>
+  <div class="repository">
+    <div class="repository-main-info">
+      <%= f.label :name %><br />
+      <%= f.text_field :name %>
+      <% if @repository.persisted? %>
+      <div class="repository-url">
+        <input type="text" value="<%= repository_url(@repository) %>" />
+      </div>
+      <% end %>
+      <div class="repository-description">
+        <%= f.label :description %><br />
+        <%= f.text_area :description, cols: 80, rows: 4 %>
+      </div>
+    </div>
+    <div class="repository-meta">
+      <div class="repository-edit-button-container">
+      <% if @repository.persisted? %>
+        <%= f.submit "Done", class: "done-button" %>
+        <%= link_to 'Delete', @repository, confirm: 'Are you sure you want to delete this repository?', method: :delete, class: 'delete-button' %>
+      <% else %>
+        <%= f.submit "Create Repository", class: "create-repository-button" %>
+      <% end %>
+      </div>
+      <div class="repository-date-created">
+      <% if @repository.persisted? %>
+        Date created<br />
+        <span><%= @repository.created_at.to_s(:month_day_year) %></span>
+      <% end %>
+      </div>
+    </div>
+  </div>
+  <h3>Permissions</h3>
+  <table>
+    <tr>
+      <th>User</th><th>Permission</th>
+    </tr>
+    <% if User.non_admins.any? %>
+    <%= f.fields_for :permissions do |b| %>
+      <% unless b.object.user_id == current_user.id %>
+      <tr>
+        <% user = User.find(b.object.user_id) %>
+        <td class="row-key">
+          <% if current_user.admin? %>
+            <%= link_to user.email, user_path(user) %>
+          <% else %>
+            <%= user.email %>
+          <% end %>
+        </td>
+        <td class="row-value">
+          <%= b.hidden_field :user_id %>
+          <%= b.hidden_field :repository_id %>
+          <%= b.select :name,
+                       options_for_select([
+                       ['None', ''],
+                       ['Read', 'r'],
+                       ['Read/Write', 'w'],
+                       ['Full', 'f']
+          ], selected: b.object.name) %>
+        </td>
+      </tr>
+      <% end %>
+    <% end %>
+    <% else %>
+    <tr><td class="table-message" colspan="2">There are no regular users</td></tr>
+    <% end %>
+  </table>
+  <div class="repository-edit-button-container-bottom">
+    <%= link_to '&larr; Back to repositories'.html_safe, repositories_path, class: "back-link" %>
+    <% if @repository.persisted? %>
+      <%= f.submit "Update", class: "done-button" %>
+    <% else %>
+      <%= f.submit "Create Repository", class: "create-repository-button" %>
+    <% end %>
+  </div>
+<% end %>
+

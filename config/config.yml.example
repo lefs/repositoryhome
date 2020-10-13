@@ -1,0 +1,6 @@
+# The directory where the actual repositories should be saved.
+repositories_dir: "/home/git/repositories"
+
+# Where all the user SSH keys go.
+authorized_keys_file: "/home/git/.ssh/authorized_keys"
+

@@ -1,0 +1,9 @@
+Hi <%= @user.email %>
+
+A Repository Home account has been created for you.
+
+Your username is <%= @user.email %>.
+To set your password please go to:
+<%= edit_password_url(@user, reset_password_token: @token) %>
+
+Thank you!

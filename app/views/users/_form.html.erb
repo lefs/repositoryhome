@@ -1,0 +1,57 @@
+<%= form_for(@user) do |f| %>
+<%= render partial: 'shared/form_errors', locals: { resource: @user, resource_name: "this user" } %>
+  <div class="user">
+    <div class="user-main-info">
+      <%= f.label :email %><br />
+      <%= f.text_field :email %>
+    </div>
+    <div class="user-meta">
+      <div class="user-edit-button-container">
+      <% if @user.persisted? %>
+        <%= f.submit "Done", class: "done-button" %>
+        <%= link_to 'Delete', @user, confirm: 'Are you sure you want to delete this user?', method: :delete, class: 'delete-button' %>
+      <% else %>
+        <%= f.submit "Create User", class: "create-user-button" %>
+      <% end %>
+      </div>
+      <div class="user-is-admin">
+        <%= f.check_box :admin %>&nbsp;Admin
+      </div>
+    </div>
+  </div>
+  <% unless @user.admin %>
+  <h3>Permissions</h3>
+  <table>
+    <tr>
+      <th>Repository</th><th>Permission</th>
+    </tr>
+    <%= f.fields_for :permissions do |b| %>
+    <tr>
+      <% repository = Repository.find(b.object.repository_id) %>
+      <td class="row-key">
+        <%= link_to repository.name, repository_path(repository) %>
+      </td>
+      <td class="row-value">
+          <%= b.hidden_field :user_id %>
+          <%= b.hidden_field :repository_id %>
+          <%= b.select :name,
+                       options_for_select([
+                       ['None', ''],
+                       ['Read', 'r'],
+                       ['Read/Write', 'w'],
+                       ['Full', 'f']
+          ], selected: b.object.name) %>
+      </td>
+    </tr>
+    <% end %>
+  </table>
+  <% end %>
+  <div class="user-edit-button-container-bottom">
+    <%= link_to '&larr; Back to users'.html_safe, users_path, class: "back-link" %>
+    <% if @user.persisted? %>
+      <%= f.submit "Done", class: "done-button" %>
+    <% else %>
+      <%= f.submit "Create User", class: "create-user-button" %>
+    <% end %>
+  </div>
+<% end %>

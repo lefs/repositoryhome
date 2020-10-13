@@ -1,0 +1,934 @@
+@import "compass";
+@import "buttons/*.png";
+@include all-buttons-sprites;
+
+/***** Reset CSS *****/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+/***** Values *****/
+
+$text-size: 14px;
+$line-height: 20px;
+$content-width: 748px;
+$body-text-color: #666;
+
+/***** Mixins *****/
+@mixin white-bottom-border {
+  -moz-box-shadow: 0 1px 0 white;
+  -webkit-box-shadow: 0 1px 0 white;
+  box-shadow: 0 1px 0 white;
+}
+
+/***** Fonts *****/
+
+@font-face {
+    font-family: 'UbuntuRegular';
+    src: font-url('Ubuntu-R-webfont.woff') format('woff'),
+         font-url('Ubuntu-R-webfont.svg#UbuntuRegular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'UbuntuMedium';
+    src: font-url('Ubuntu-M-webfont.woff') format('woff'),
+         font-url('Ubuntu-M-webfont.svg#UbuntuBold') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'UbuntuBold';
+    src: font-url('Ubuntu-B-webfont.woff') format('woff'),
+         font-url('Ubuntu-B-webfont.svg#UbuntuBold') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+/***** General styles *****/
+
+body {
+  margin: 0;
+  padding: 0;
+  line-height: $line-height;
+  font-size: $text-size;
+  font-family: "UbuntuRegular", sans-serif;
+  background: transparent image-url('background.png');
+  color: $body-text-color;
+  overflow: auto;
+  padding-bottom: 120px;
+}
+
+body.user-layout, body.devise-layout {
+  background: image-url('background-header.png') 0 0 repeat-x,
+    image-url('background.png') 0 0 repeat;
+}
+
+body.admin-layout {
+  background: image-url('background-header-admin.png') 0 0 repeat-x,
+    image-url('background.png') 0 0 repeat;
+}
+
+select {
+  font-size: $text-size;
+  width: 164px;
+}
+
+form, input, ul, th, td {
+  font-family: "UbuntuRegular", sans-serif;
+}
+
+h3 {
+  margin-top: $line-height;
+}
+
+a {
+  color: $body-text-color;
+}
+
+textarea {
+  font-family: UbuntuRegular;
+}
+
+table {
+  margin-top: $line-height / 2;
+  width: 100%;
+}
+
+th, td {
+  line-height: $line-height * 1.5;
+}
+
+th {
+  font-size: 12px;
+  text-align: left;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 0;
+}
+
+td {
+  border-bottom: 1px solid white;
+  height: 50px;
+  line-height: 50px;
+  font-size: 16px;
+  color: #1a1a1a;
+  select {
+    font-size: 16px;
+  }
+}
+
+td.row-key {
+  font-size: 16px;
+  width: 570px;
+}
+
+td.row-key a {
+  color: #0152a3;
+  text-decoration: none;
+}
+
+td.row-key a:hover, td.row-key a:active {
+  color: #00a7ff;
+}
+
+td.row-value {
+  width: 164px;
+}
+
+td.table-message {
+  font-size: 12px;
+}
+
+h1, h2, h3 {
+  font-size: 16px;
+  font-family: UbuntuBold;
+  color: #1A1A1A;
+  margin-top: $line-height;
+}
+
+input[type="text"], input[type="password"], input[type="email"] {
+  font-size: $text-size;
+  color: #1A1A1A;
+  line-height: $line-height;
+  height: 30px;
+  border: 1px solid #999;
+}
+
+textarea {
+  border: 1px solid #999;
+  font-size: $text-size;
+}
+
+#alert, #notice {
+  width: $content-width;
+  margin: $line-height auto 0 auto;
+  @include border-radius(4px);
+}
+
+#devise-content {
+  #alert, #notice {
+    width: 100%;
+  }
+  div#error_explanation h2 {
+    display: none;
+  }
+}
+
+#alert p, #notice p {
+  padding: 2px 10px;
+}
+
+#notice {
+  font-size: 13px;
+  color: #333;
+  background-color: #feffd4;
+  border: 1px solid #d4d095;
+}
+
+#alert {
+  font-size: 13px;
+  color: #333;
+  background-color: #fff4ed;
+  border: 1px solid #ba7d7d;
+}
+
+/***** Buttons *****/
+
+.button {
+  text-decoration: none;
+  text-indent: -1000em;
+}
+
+.new-button {
+  height: 43px;
+}
+
+.delete-button {
+  width: 42px;
+  height: 29px;
+  text-decoration: none;
+  text-indent: -1000em;
+  border: 0;
+  cursor: pointer;
+  @include buttons-sprite(delete);
+  display: inline-block;
+  float: right;
+  &:hover, &:active {
+    @include buttons-sprite(delete-hover);
+  }
+}
+
+.done-button {
+  width: 73px;
+  height: 29px;
+  text-decoration: none;
+  text-indent: -1000em;
+  border: 0;
+  @include buttons-sprite(done);
+  cursor: pointer;
+}
+
+.done-button:hover, .done-button:active {
+  @include buttons-sprite(done-hover);
+}
+
+.create-repository-button {
+  width: 164px;
+  height: 29px;
+  text-decoration: none;
+  text-indent: -1000em;
+  border: 0;
+  @include buttons-sprite(create-repository);
+  cursor: pointer;
+}
+
+.create-repository-button:hover, .create-repository-button:active {
+  @include buttons-sprite(create-repository-hover);
+}
+
+.create-user-button {
+  width: 164px;
+  height: 29px;
+  text-decoration: none;
+  text-indent: -1000em;
+  border: 0;
+  @include buttons-sprite(create-user);
+  cursor: pointer;
+}
+
+.create-user-button:hover, .create-user-button:active {
+  @include buttons-sprite(create-user-hover);
+}
+
+#create-key-button {
+  width: 164px;
+  height: 29px;
+  text-decoration: none;
+  text-indent: -1000em;
+  border: 0;
+  @include buttons-sprite(create-key);
+  cursor: pointer;
+}
+
+#create-key-button:hover, #create-key-button:active {
+  @include buttons-sprite(create-key-hover);
+}
+
+.edit-button {
+  width: 66px;
+  height: 29px;
+  text-decoration: none;
+  text-indent: -1000em;
+  border: 0;
+  @include buttons-sprite(edit);
+  display: inline-block;
+}
+
+.edit-button:hover, .edit-button:active {
+  @include buttons-sprite(edit-hover);
+}
+
+.submit-button {
+  background: transparent;
+}
+.submit-button:hover, .submit-button:active {
+  color: white;
+  background-color: rgb(0, 163, 35);
+  cursor: pointer;
+  text-decoration: none;
+}
+
+#update-user-details-button {
+  width: 238px;
+  height: 29px;
+  text-decoration: none;
+  text-indent: -1000em;
+  border: 0;
+  @include buttons-sprite(update-user-details);
+  cursor: pointer;
+}
+
+#update-user-details-button:hover, #update-user-details-button:active {
+  @include buttons-sprite(update-user-details-hover);
+}
+
+a#new-key-button {
+  color: transparent;
+  width: 123px;
+  height: 43px;
+  text-indent: -1000em;
+  text-decoration: none;
+  @include buttons-sprite(new-key);
+  cursor: pointer;
+  display: inline-block;
+}
+
+a#new-key-button:hover, a#new-key-button:active {
+  @include buttons-sprite(new-key-hover);
+}
+
+
+/***** Navigation and headers *****/
+
+/* nav a selected #00A7FF */
+
+nav {
+  height: 62px;
+  width: $content-width;
+  font-size: 12px;
+  margin: 0 auto;
+  color: #1A1A1A;
+}
+
+nav #logo {
+  float: left;
+  margin-top: 20px;
+}
+
+nav div {
+  float: right;
+  margin-top: 22px;
+}
+
+nav div span {
+  margin-right: 10px;
+  border-right: 1px solid #999;
+  padding-right: 10px;
+}
+
+nav a {
+  color: #666;
+  text-decoration: none;
+}
+
+nav a:hover, nav a:active {
+  color: #333;
+}
+
+nav a.active-settings {
+  color: #00a7ff;
+}
+
+#admin-navigation {
+  width: $content-width;
+  clear: both;
+  padding: 0;
+  margin: 0 auto;
+  height: 45px;
+}
+
+#admin-navigation li {
+  display: inline;
+  margin-right: 20px;
+}
+
+#admin-navigation li a {
+  color: #000;
+  font-family: UbuntuBold;
+  text-decoration: none;
+  line-height: 45px;
+  height: 49px;
+  display: block;
+  float: left;
+  margin-right: 30px;
+}
+
+#admin-navigation li.active-tab a {
+  background: transparent image-url('tab-pointer.png') bottom center no-repeat;
+}
+
+.backlink-container {
+  width: $content-width;
+  margin: 0 auto;
+  overflow: auto;
+}
+
+.back, .cancel {
+  margin-top: $line-height;
+}
+
+.back {
+  float: left;
+}
+
+.back-link, .cancel-link {
+  height: 25px;
+  line-height: 25px;
+  font-size: 13px;
+  text-decoration: none;
+  &:hover, &:active {
+    text-decoration: underline;
+  }
+}
+
+.cancel {
+  float: right;
+}
+
+.cancel-link {
+  display: inline-block;
+  width: 75px;
+  @include buttons-sprite(x-cancel, false, 50px);
+  &:hover, &:active {
+    @include buttons-sprite(x-cancel-hover, false, 50px);
+  }
+}
+
+.bottom-nav {
+  margin-top: $line-height;
+}
+
+/***** Various *****/
+
+.double-top-border {
+  clear: both;
+  margin-top: $line-height;
+  border-bottom: 1px solid #ccc;
+  @include white-bottom-border;
+}
+
+/***** Errors *****/
+
+.field_with_errors {
+  display: inline;
+}
+
+#error_explanation {
+  display: block;
+  margin-top: 20px;
+  border: 1px solid #ba7d7d;
+  @include border-radius(4px);
+  padding: 7px 14px;
+  padding-bottom: 0;
+  margin-bottom: 20px;
+  background-color: #fff4ed;
+  overflow: auto;
+  h2 {
+    display: none;
+  }
+  ul {
+    clear: both;
+    padding-bottom: 7px;
+  }
+  ul li {
+    font-size: 13px;
+    list-style: none;
+  }
+}
+
+/***** Repositories and Users *****/
+
+#repositories-header, #repositories, #users-header, #users {
+  width: $content-width;
+  margin: 0 auto;
+  overflow: auto;
+  clear: both;
+}
+
+#repositories, #users {
+  margin-bottom: $line-height * 2;
+}
+
+#repository-search {
+  margin-top: $line-height;
+}
+
+#repository-search input[type="text"] {
+  padding: 0;
+  margin: 0 0 0 1px;
+  height: 40px;
+  border: 1px solid #999;
+  border-right: 0;
+  float: left;
+  @include white-bottom-border;
+  width: 380px;
+  padding: 0 10px;
+}
+
+#repository-search input#search-button {
+  border-left: 0;
+  text-indent: -1000em;
+  @include buttons-sprite(search);
+  width: 52px;
+  height: 43px;
+  cursor: pointer;
+  border: 0;
+}
+
+#repository-search input#search-button:hover {
+  @include buttons-sprite(search-hover);
+}
+
+a#new-repository, a#new-user {
+  float: right;
+  height: 43px;
+  margin-top: $line-height;
+  font-family: UbuntuMedium;
+  font-size: 14px;
+  text-decoration: none;
+  color: white;
+  text-indent: -1000em;
+}
+
+a#new-repository {
+  width: 170px;
+  @include buttons-sprite(new-repository);
+}
+
+a#new-repository:hover, a#new-repository:active {
+  @include buttons-sprite(new-repository-hover);
+}
+
+a#new-user {
+  width: 127px;
+  @include buttons-sprite(new-user);
+}
+
+a#new-user:hover, a#new-user:active {
+  @include buttons-sprite(new-user-hover);
+}
+
+#repositories-found {
+  margin-top: $line-height;
+  span {
+    font-family: UbuntuBold;
+    color: #00A7ff;
+  }
+}
+
+.repository, .user {
+  margin-top: $line-height;
+  border-bottom: 1px solid #ccc;
+  @include white-bottom-border;
+  overflow: auto;
+}
+
+.repository-main-info, .user-main-info {
+  width: 570px;
+  float: left;
+  overflow: auto;
+  border-right: 1px solid #ccc;
+}
+
+.user-main-info {
+  min-height:70px
+}
+
+.repository-main-info {
+  min-height: 70px;
+  padding-bottom: $line-height;
+}
+
+.repository-meta, .user-meta {
+  float: left;
+  overflow: auto;
+  width: 177px;
+}
+
+.user-meta {
+  padding-top: 2px;
+}
+
+a.repository-name, a.user-email {
+  color: #0152a3;
+  font-size: 18px;
+  font-family: UbuntuMedium;
+  display: inline;
+  text-decoration: none;
+}
+
+a.repository-name:hover, a.repository-name:active,
+a.user-email:hover, a.user-email:active {
+  color: #00a7ff;
+}
+
+input#repository_name, #edit-user-view input#user_email {
+  width: 525px;
+  padding: 0 10px;
+}
+
+.repository-edit-button-container {
+  border-bottom: 1px solid #ccc;
+  padding-left: 8px;
+  height: 35px;
+}
+
+.permission-name {
+  color: #428256;
+}
+
+.repository-edit-button-container-bottom, .user-edit-button-container-bottom {
+  border-top: 1px solid #ccc;
+  -moz-box-shadow: 0 1px 0 white inset;
+  -webkit-box-shadow: 0 1px 0 white inset;
+  box-shadow: 0 1px 0 white inset;
+  padding-top: 10px;
+  margin-top: 50px;
+  clear: both;
+  input[type="submit"] {
+    float: right;
+  }
+  .back-link {
+    float: left;
+  }
+}
+
+.repository-date-created {
+  margin: 5px 0 5px 8px;
+  color: #777;
+  font-size: 12px;
+  span {
+    font-size: 14px;
+    font-family: UbuntuBold;
+  }
+}
+
+.repository-url {
+  margin-top: $line-height / 2;
+}
+
+.repository-url input {
+  width: 525px;
+  padding: 0 10px;
+}
+
+.repository-description {
+  color: rgb(102, 102, 102);
+  padding-top: $line-height;
+}
+
+.repository-description textarea {
+  width: 525px;
+  padding: 10px;
+}
+
+#single-repository-view, #edit-repository-view,
+#single-user-view, #edit-user-view {
+  clear: both;
+  width: $content-width;
+  margin: 0 auto;
+  overflow: auto;
+  margin-bottom: $line-height * 2;
+  h1 {
+    font-size: 16px;
+    font-family: UbuntuBold;
+    margin-top: $line-height;
+  }
+}
+
+#edit-repository-view label, #edit-user-view label {
+  font-size: 12px;
+  color: $body-text-color;
+}
+
+#users-found {
+  float: left;
+  margin-top: $line-height * 1.5;
+  span {
+    font-family: UbuntuBold;
+    color: #00A7ff;
+  }
+}
+
+.user-email {
+  float: left;
+}
+
+.user-repositories, .repository-users {
+  font-size: 13px;
+  float:right;
+  margin-right: 23px;
+  span {
+    font-family: UbuntuBold;
+    color: #00A7ff;
+  }
+}
+
+.user-date-added {
+  padding-top: $line-height / 3;
+  color: rgb(102, 102, 102);
+  clear:both;
+  margin-bottom: $line-height / 2;
+  font-size: 12px;
+  span {
+    font-family: UbuntuBold;
+    font-size: $text-size;
+  }
+}
+
+.user-edit-button-container {
+  margin: 0 0 6px 8px;
+}
+
+.user-is-admin {
+  padding: 6px 12px;
+  background-color: #ddd;
+  border-top:1px solid #ccc;
+  color: #333;
+}
+
+.edit_user {
+  margin-top: $line-height;
+  label {
+    font-size: 12px;
+  }
+}
+
+/***** Settings *****/
+#settings-view, #key-edit-view {
+  width: $content-width;
+  margin: 0 auto;
+  input[type="text"], input[type="password"] {
+    width: 223px;
+    padding: 1px 5px;
+  }
+  label {
+    font-size: 12px;
+  }
+}
+
+#key-edit-view {
+  input[type="text"], textarea {
+    width: 525px;
+    padding: 0 10px;
+    margin: 2px;
+  }
+  textarea {
+    padding: 10px;
+  }
+  input[type="text"] {
+    margin-bottom: $line-height / 2;
+  }
+}
+
+.key {
+  overflow: auto;
+}
+
+.key form {
+  margin-top: 20px;
+}
+
+.key-name-and-body {
+  float: left;
+  border-right: 1px solid #ccc;
+  width: 570px;
+}
+
+.add-key-button {
+  float: left;
+  overflow: auto;
+  width: 169px;
+  padding: 2px 0 6px 8px;
+  border-bottom: 1px solid #ccc;
+}
+
+#settings-view {
+  h2#keys-section-title {
+    margin-top: $line-height * 2;
+    float: left;
+  }
+  h3 {
+    margin: $line-height 0 ($line-height / 3) 0;
+  }
+  .update-email-field, .update-password-field {
+    float: left;
+    margin-right: 20px;
+  }
+  .update-password-confirm-field {
+    float: left;
+  }
+  .update-user-details-submit {
+    clear: both;
+    padding-top: $line-height / 2;
+    text-align: right;
+  }
+  th.key-name, td.key-name {
+    width: 260px;
+    a {
+      font-size: 18px;
+      color: #0152a3;
+      text-decoration: none;
+    }
+    a:hover, a:active {
+      color: #00a7ff;
+    }
+  }
+  td.key-body {
+    max-width: 300px;
+    word-wrap: break-word;
+    font-size: 12px;
+    line-height: 18px;
+    padding-bottom: 10px;
+  }
+  #new-key-button-container {
+    margin-top: $line-height;
+    text-align: right;
+  }
+}
+
+/***** Devise pages (Sign-in, Forgot my Password etc.) *****/
+#devise-content {
+  width: 300px;
+  margin: 0 auto;
+  #logo {
+    margin-top: 20px;
+  }
+  h2 {
+    margin-top: 50px;
+  }
+  form#new_user, form#edit_user {
+    margin-top: 20px;
+    label {
+      font-size: 12px;
+    }
+    input[type="email"], input[type="password"] {
+      width: 278px;
+      margin-bottom: 10px;
+      padding: 0 10px;
+      display: block;
+    }
+    input[type="submit"]#sign-in-button,
+    input[type="submit"]#change-password-button,
+    input[type="submit"]#reset-password-instructions-button {
+      float: right;
+      text-decoration: none;
+      text-indent: -1000em;
+      border: 0;
+      cursor: pointer;
+      display: inline-block;
+    }
+    input[type="submit"]#sign-in-button {
+      width: 85px;
+      height: 43px;
+      @include buttons-sprite(sign-in);
+      &:hover, &:active {
+        @include buttons-sprite(sign-in-hover);
+      }
+    }
+    input[type="submit"]#change-password-button {
+      width: 154px;
+      height: 43px;
+      @include buttons-sprite(change-password);
+      &:hover, &:active {
+        @include buttons-sprite(change-password-hover);
+      }
+    }
+    input[type="submit"]#reset-password-instructions-button {
+      width: 213px;
+      height: 43px;
+      @include buttons-sprite(reset-password);
+      &:hover, &:active {
+        @include buttons-sprite(reset-password-hover);
+      }
+    }
+  }
+  #links {
+    line-height: 43px;
+    a {
+      color: #0152a3;
+      text-decoration: none;
+    }
+    a:hover, a:active {
+      color: #00a7ff;
+    }
+  }
+}
+

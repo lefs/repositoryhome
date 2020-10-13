@@ -1,0 +1,13 @@
+<% unless current_user.admin? %>
+<div class="backlink-container">
+  <div class="back">
+    <%= link_to '&larr; Back to settings'.html_safe, settings_path, class: "back-link" %>
+  </div>
+  <% unless controller.action_name == 'show' %>
+  <div class="cancel">
+    <%= link_to 'Cancel'.html_safe, settings_path, class: "cancel-link" %>
+  </div>
+  <% end %>
+</div>
+<%= render "shared/separator" %>
+<% end %>

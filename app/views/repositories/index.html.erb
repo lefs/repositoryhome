@@ -1,0 +1,61 @@
+<section id="repositories-header">
+  <%= link_to '+&nbsp;&nbsp;New Repository'.html_safe, new_repository_path, id: "new-repository" %>
+  <%= form_tag repositories_path, method: 'get', id: 'repository-search' do %>
+  <p>
+    <%= text_field_tag :search, params[:search], id: "search-field" %><%= submit_tag "Search", name: nil, id: "search-button" %>
+  </p>
+  <% end %>
+  <p id="repositories-found">
+    <% if @user_has_searched %>
+      <% if @number_of_repositories > 0 %> 
+        Found <span><%= @number_of_repositories %></span>
+        <%= @number_of_repositories == 1 ? "repository" : "repositories" %>
+      <% else %>
+        No repositories found...
+      <% end %>
+    <% else %>
+      There
+      <%= @number_of_repositories == 1 ? "is" : "are" %>
+      <span><%= @number_of_repositories %></span>
+      <%= @number_of_repositories == 1 ? "repository" : "repositories" %>
+      available
+    <% end %>
+  </p>
+</section>
+<%= render "shared/separator" %>
+<% if alert %>
+  <div id="alert"><p><%= alert %></p></div>
+<% end %>
+<div id="repositories">
+  <% @repositories.each do |repository| %>
+  <div class="repository" id="repository-<%= repository.name %>">
+    <div class="repository-main-info">
+      <%= link_to repository.name, repository, class: "repository-name" %>
+      <div class="repository-users">
+        Users <span><%= repository.users.length %></span>
+      </div>
+      <div class="repository-url">
+        <input type="text" value="<%= repository_url(repository) %>" />
+      </div>
+      <% if repository.description %>
+      <div class="repository-description">
+        <%= repository.description %>
+      </div>
+      <% end %>
+    </div>
+    <div class="repository-meta">
+      <div class="repository-edit-button-container">
+        <% if current_user.admin? || repository.permission == "f" %>
+          <%= link_to 'Edit', edit_repository_path(repository), class: "edit-button" %>
+        <% else %>
+          <span class="permission-name"><%= permission_display_name(repository.permission) %></span>
+        <% end %>
+      </div>
+      <div class="repository-date-created">
+        Date created<br />
+        <span><%= repository.created_at.to_s(:month_day_year) %></span>
+      </div>
+    </div>
+  </div>
+  <% end %>
+</div>

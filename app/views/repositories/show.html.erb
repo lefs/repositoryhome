@@ -1,0 +1,62 @@
+<%= render "backlink" %>
+<% if notice %>
+  <div id="notice"><p><%= notice %></p></div>
+<% end %>
+<% if alert %>
+  <div id="alert"><p><%= alert %></p></div>
+<% end %>
+<div id="single-repository-view">
+  <div class="repository">
+    <div class="repository-main-info">
+      <%= link_to @repository.name, @repository, class: "repository-name" %>
+      <div class="repository-url">
+        <input type="text" value="<%= repository_url(@repository) %>" />
+      </div>
+      <% if @repository.description %>
+      <div class="repository-description">
+        <%= @repository.description %>
+      </div>
+      <% end %>
+    </div>
+    <div class="repository-meta">
+      <div class="repository-edit-button-container">
+        <% if current_user.admin? || @permission == "f" %>
+          <%= link_to 'Edit', edit_repository_path(@repository), class: "edit-button" %>
+          <%= link_to 'Delete', @repository, confirm: 'Are you sure you want to delete this repository?', method: :delete, class: 'delete-button' %>
+        <% else %>
+          <span class="permission-name">
+            <%= permission_display_name(@permission) %>
+          </span>
+        <% end %>
+      </div>
+      <div class="repository-date-created">
+        Date created<br />
+        <span><%= @repository.created_at.to_s(:month_day_year) %></span>
+      </div>
+    </div>
+  </div>
+  <h3>Permissions</h3>
+  <table>
+    <tr>
+      <th>User</th><th>Permission</th>
+    </tr>
+    <% if User.non_admins.any? %>
+    <% @repository.permissions.each do |permission| %>
+    <tr>
+      <td class="row-key">
+        <% if current_user.admin? %>
+          <%= link_to find_user_email(permission.user_id), user_path(permission.user_id) %>
+        <% else %>
+          <%= find_user_email(permission.user_id) %>
+        <% end %>
+      </td>
+      <td><%= permission_display_name(permission.name) %></td>
+    </tr>
+    <% end %>
+    <% else %>
+    <tr><td class="table-message" colspan="2">There are no regular users</td></tr>
+    <% end %>
+  </table>
+  <br /><br />
+  <%= link_to '&larr; Back to repositories'.html_safe, repositories_path, class: "back-link" %>
+</div>

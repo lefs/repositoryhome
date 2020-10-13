@@ -1,0 +1,57 @@
+#!/usr/bin/env ruby
+
+# This script is invoked by the SSH server when a Repositoryhome user
+# connects. The SSH command the user has given is stored in the environment.
+# Based on the key id provided and the command, the user is either granted
+# or denied access to the repository. The action is then delegated to the
+# git shell.
+
+## Read/set the necessary environment variables/constants needed.
+APP_PATH = File.expand_path('../../config/application', __FILE__)
+# Set the correct environment in order to load the correct configuration.
+ENV['RAILS_ENV'] ||= 'production'
+require File.expand_path('../../config/environment', __FILE__)
+require File.expand_path('../../lib/git_command_helper', __FILE__)
+require 'logger'
+
+num_log_files = 5
+log_file_size = 10 * 1024
+log_file = File.expand_path('../../log/ssh_auth.log', __FILE__)
+log = Logger.new(log_file, num_log_files, log_file_size)
+log.formatter = Logger::Formatter.new
+log.level = ENV['RAILS_ENV'] == 'production' ? Logger::INFO : Logger::DEBUG
+log.formatter.datetime_format = "%Y-%m-%d %H:%M:%S"
+
+## Parse and validate the SSH command given.
+begin
+  cmd, repo_name = GitCommandHelper.parse_command ENV['SSH_ORIGINAL_COMMAND']
+rescue GitCommandHelper::GitCommandError => error
+  log.error(error.message)
+  abort
+end
+
+## Check user's permissions to execute given command.
+#
+# Possible errors:
+#  * Key by the given ID was not found.
+#  * Repository does not exist or can not be found.
+#  * RepositoryPermission does not exist or is insufficient for the type
+#    of access requested.
+user_key_id = ARGV[0]
+access_type = GitCommandHelper.command_type cmd
+repo = Repository.find_by_name_key_id_and_access_type(repo_name,
+                                                      user_key_id,
+                                                      access_type)
+unless repo
+  msg = "Repository #{repo_name} (using key id '#{user_key_id}' " +
+        "and access type '#{access_type}') can not be accessed."
+  log.error(msg)
+  abort
+end
+
+# At this point we assume the user has valid permission for the command.
+begin
+  exec('git-shell', '-c', "#{cmd} '#{repo.path}'")
+rescue SystemCallError => error
+  log.fatal(error.message)
+end

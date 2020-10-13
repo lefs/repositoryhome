@@ -1,0 +1,14 @@
+<% if resource.errors.any? %>
+  <div id="error_explanation">
+    <h2 class="error-title">
+      Oops! <%= pluralize(resource.errors.count, "error") %>
+      prohibited <%= resource_name %> from being saved:
+    </h2>
+    <ul>
+    <% resource.errors.full_messages.each do |msg| %>
+      <li><%= msg %></li>
+    <% end %>
+    </ul>
+  </div>
+<% end %>
+

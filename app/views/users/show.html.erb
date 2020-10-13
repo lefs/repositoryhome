@@ -1,0 +1,62 @@
+<% if notice %>
+  <div id="notice"><p><%= notice %></p></div>
+<% end %>
+<% if alert %>
+  <div id="alert"><p><%= alert %></p></div>
+<% end %>
+<div id="single-user-view">
+  <div class="user">
+    <div class="user-main-info">
+      <%= link_to @user.email, @user, class: "user-email" %>
+      <div class="user-repositories">
+      <% if @user.admin? %>
+        All repositories
+      <% else %>
+        <% count = @user.repositories.length %>
+        <% if count > 0 %>
+          <%= count == 1 ? "Repository" : "Repository".pluralize %>
+          <span><%= count %></span>
+        <% else %>
+          No repositories
+        <% end %>
+      <% end %>
+      </div>
+      <div class="user-date-added">
+        Date Added
+        <span><%= @user.created_at.to_s(:month_day_year) %></span>
+      </div>
+    </div>
+    <div class="user-meta">
+      <div class="user-edit-button-container">
+        <%= link_to 'Edit', edit_user_path(@user), class: "edit-button" %>
+      </div>
+      <% if @user.admin? %>
+      <div class="user-is-admin">Admin</div>
+      <% end %>        
+    </div>
+  </div>
+  <% unless @user.admin? %>
+  <h3>Permissions</h3>
+  <% if @user.permissions.length > 0 %>
+  <table>
+    <tr>
+      <th>Repository</th><th>Permission</th>
+    </tr>
+    <% @user.permissions.each do |permission| %>
+    <tr>
+      <td class="row-key">
+        <%= link_to find_repository_name(permission.repository_id), repository_path(permission.repository_id) %>
+      </td>
+      <td><%= permission_display_name(permission.name) %></td>
+    </tr>
+    <% end %>
+  </table>
+  <% else %>
+    <p>This user doesn't have access to any repositories.</p>
+  <% end %>
+  <% end %>
+  <div class="bottom-nav">
+    <br /><br />
+    <%= link_to '&larr; Back to users'.html_safe, users_path, class: "back-link" %>
+  </div>
+</div>

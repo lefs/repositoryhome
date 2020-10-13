@@ -1,0 +1,18 @@
+<%= form_for(@user, url: settings_path, method: :put) do |f| %>
+  <%= render partial: 'shared/form_errors', locals: { resource: @user, resource_name: "your account details" } %>
+  <div class="update-email-field">
+    <%= f.label :email %><br />
+    <%= f.text_field :email %>
+  </div>
+  <div class="update-password-field">
+    <%= f.label :password %><br />
+    <%= f.password_field :password %>
+  </div>
+  <div class="update-password-confirm-field">
+    <%= f.label :password_confirmation %><br />
+    <%= f.password_field :password_confirmation %>
+  </div>
+  <div class="update-user-details-submit">
+    <%= f.submit "Update user details", id: "update-user-details-button" %>
+  </div>
+<% end %>
